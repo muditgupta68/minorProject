@@ -8,7 +8,7 @@
             <h2 class="section-heading text-uppercase mb-5">Contact Us</h2>
             <!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3> -->
           </div>
-          <form id="contactForm" >
+          <form id="contactForm" action="/contact" method="POST">
             <div class="row align-items-stretch mb-5">
               <div class="col-md-6">
                 <div class="form-group">
@@ -40,12 +40,9 @@
                     id="phone"
                     type="tel"
                     placeholder="Your Phone *"
-                    name="id"
+                    name="phone"
                     required
                   />
-                  <!-- <div class="invalid-feedback" data-sb-feedback="phone:required">
-                    A phone number is required.
-                  </div> -->
                 </div>
               </div>
               <div class="col-md-6">

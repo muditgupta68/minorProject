@@ -11407,7 +11407,7 @@ p {
 }
 
 #mainNav .navbar-brand img {
-  height: 3rem;
+  height: 4rem;
 }
 
 #secNav .navbar-brand img {
@@ -11519,7 +11519,7 @@ header.masthead .masthead-heading {
 @media (min-width: 768px) {
   header.masthead {
     padding-top: 17rem;
-    padding-bottom: 15.5rem;
+    padding-bottom: 13.5rem;
   }
 
   header.masthead .masthead-subheading {
