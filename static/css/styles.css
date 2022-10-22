@@ -11398,6 +11398,28 @@ p {
   text-transform: uppercase;
 }
 
+.error{
+  border: solid #a00606 3px;
+  border-radius: 8px;
+}
+
+.success{
+  border: solid #1db66f 3px;
+  border-radius: 8px;
+}
+.form-group,.bgWhite{
+  background-color: #fff;
+}
+
+.none{
+  display: none;
+}
+
+.text_white{
+  color: #323539;
+  margin: 10px;
+}
+
 #secNav .navbar-brand {
   color: #ffc800;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

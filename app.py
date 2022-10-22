@@ -62,8 +62,6 @@ def contact():
                                                    name=name,msg=message,phone=phone,email=email)
                             )
         
-        print(email)
-        
     return render_template('contact.html',secondaryNav = secondaryNav)
 
 @app.route("/login")
