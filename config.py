@@ -11,5 +11,8 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SECRET_KEY = config('SECRET_KEY')
 PORT = config('PORT')
 DEBUG=config('DEBUG')
-TESTING=config('DEBUG')
+# TESTING=config('DEBUG')
+
+gmail_user=config('gmail_user')
+gmail_pass=config('gmail_pass')
 

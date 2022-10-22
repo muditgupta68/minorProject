@@ -9,6 +9,7 @@
             <!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3> -->
           </div>
           <form id="contactForm" action="/contact" method="POST">
+            
             <div class="row align-items-stretch mb-5">
               <div class="col-md-6">
                 <div class="form-group">
@@ -20,6 +21,7 @@
                     placeholder="Your Name *"
                     name="name"
                     required
+                    autocomplete="my-field-name1"
                   />
                 </div>
                 <div class="form-group">
@@ -31,6 +33,7 @@
                     placeholder="Your Email *"
                     name="email"
                     required
+                    autocomplete="my-field-name2"
                   />
                 </div>
                 <div class="form-group mb-md-0">
@@ -42,6 +45,7 @@
                     placeholder="Your Phone *"
                     name="phone"
                     required
+
                   />
                 </div>
               </div>
@@ -55,12 +59,6 @@
                     name="message"
                     required
                   ></textarea>
-                  <div
-                    class="invalid-feedback"
-                    data-sb-feedback="message:required"
-                  >
-                    A message is required.
-                  </div>
                 </div>
               </div>
             </div>
