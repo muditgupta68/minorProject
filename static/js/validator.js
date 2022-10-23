@@ -1,9 +1,9 @@
+
 const userName = document.querySelector('#name');
 const email = document.querySelector('#email');
 const phone = document.querySelector('#phone');
 const message = document.querySelector('#message');
-const submitButton = document.querySelector('#submitButton');
-
+const submitButton = document.querySelector('#submitButton'); 
 const form = document.querySelector('#contactForm');
 
 const checkName = () => {
@@ -111,9 +111,27 @@ form.addEventListener('submit', function (e) {
         isPhoneValid &&
         isMessageValid;
 
+    console.log(isFormValid)
+
     // submit to the server if the form is valid
     if (!isFormValid) {
-        e.preventDefault()
+        e.preventDefault();
+        swal({
+            title: "Invalid Entry!",
+            text:"Enter the valid entry before submission",
+            icon: "error",
+            buttons: false,
+            timer: 2000,
+        });
+    }
+    else{
+    swal({
+        title: "Form Submitted Successfully",
+        text:"We will Revert back to your message, Thankyou!",
+        icon: "success",
+        buttons: false,
+        timer: 2000,
+    });
     }
 });
 

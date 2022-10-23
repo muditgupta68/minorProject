@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import os
@@ -62,17 +62,28 @@ def contact():
                                                    name=name,msg=message,phone=phone,email=email)
                             )
         
+        return redirect(url_for("home"),200)
+        
     return render_template('contact.html',secondaryNav = secondaryNav)
 
-@app.route("/login")
+@app.route("/login",methods=['GET','POST'])
 def login():
-    # secondaryNav = True;
-    return "/login"
+    secondaryNav = True;
+    if request.method == 'POST':
+        pass
+    return render_template('login.html',secondaryNav = secondaryNav)
 
-@app.route("/register")
+@app.route("/register",methods=['GET','POST'])
 def register():
-    # secondaryNav = True;
-    return "/register"
+    secondaryNav = True;
+    if request.method == 'POST':
+        pass
+    return render_template('register.html',secondaryNav = secondaryNav)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    secondaryNav = True;
+    return render_template('404.html',secondaryNav = secondaryNav), 404
 
 @app.before_first_request
 def create_tables():
