@@ -11,7 +11,8 @@ class Contact(db.Model):
     def __repr__(self):
         return f"{self.id} - {self.name}"
     
-class RegisterUser(db.Model):
+class User(db.Model):
+    
     id = db.Column(db.Integer,primary_key=True)
     userName = db.Column(db.String(70),nullable=False)
     userEmail = db.Column(db.String(120), nullable=False,unique=True)
@@ -19,4 +20,4 @@ class RegisterUser(db.Model):
     date = db.Column(db.DateTime,default=datetime.utcnow)
     
     def __repr__(self):
-        return f"{self.id} - {self.name}:{self.email}"
+        return f"{self.id} - {self.userName}:{self.userEmail}"

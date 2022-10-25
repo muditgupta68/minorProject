@@ -80,7 +80,39 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+@media (min-width: 768px){
+.register_container{
+    padding: 8rem 0;
+}
+.alert{
+  margin-top: 1rem !important;
+  font-size: 20px;
+  margin-bottom: 3rem !important;
+}
 
+.reg_sec{
+  padding: 9rem 0 !important;
+}
+
+}
+
+.reg_sec{
+  padding: 6rem 0;
+}
+
+.block{
+  display: block;
+}
+.none{
+  display: none;
+}
+.alert{
+  text-align: center !important;
+  font-weight: bolder !important;
+  margin-top: auto;
+  font-size: 14px;
+  margin-bottom: 0rem ;
+}
 
 hr {
   margin: 1rem 0;
