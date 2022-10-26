@@ -41,6 +41,8 @@ def load_user(email):
     from models import User
     return User.query.filter_by(userEmail=email).first()
 
+
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -49,46 +51,76 @@ def token_required(f):
         if session.get("token"):
             token = session.get("token")
         
-        if not token and not session.get("email"):
-            flash("No authorization found! Please login")
+        if not token:
+            flash("Authorization not granted! Please login")
+            return redirect(url_for('login'))
+
+        # print(token,type(token))
+        print(session.get("token_exp") == datetime.utcnow() + timedelta(seconds=0))
+        
+        if session.get("token_exp") == datetime.utcnow() + timedelta(seconds=0):
+            session.clear()
+            flash("Authentication Expired, Login Again!")
             return redirect(url_for('login'))
         
-        # print(token,type(token))
-        
         try:
-            data = jwt.decode(token, 'hello','utf-8')
+            data = jwt.decode(token, SECRET_KEY,'utf-8')
             from models import User
             current_user = User.query\
                     .filter_by(id = data['userId'])\
                     .first()
+            session["current_user"] = current_user
             print(current_user)
-            return render_template('dashboard.html',userData = current_user)
+            # to extract data
+            # data = session.get("current_user")
+            # print(data.id)
+            return f(current_user, *args, **kwargs)
+
         except:
-            # print("decoded_DATA:",data)
-            # print(data['userId'])
+            session.clear()
             flash("Token-Auth Error! Try Again!")
             return redirect(url_for('login'))
         
     return decorated
 
+def check_user(route_name):
+    @wraps(route_name)
+    def check_user_decoration(*args, **kwargs):
+        if session.get('user_Login') and session.get('user_Login')==True:
+            return redirect(url_for('dashboard'))
+        else:
+            return route_name()
+    return check_user_decoration
+
 @app.route("/", methods =['GET'])
 def home():
+    if session.get('user_Login') and session.get('user_Login')==True:
+        return redirect(url_for('dashboard'))
     return render_template('home.html')
 
 @app.route("/dashboard", methods =['GET'])
 @token_required
-def dashboard():
-    return '/dashboard'
+def dashboard(current_user):
+    return render_template('dashboard.html',userData=current_user)
+    
 
-@app.route("/about")
+@app.route("/about", methods =['GET'])
+@check_user
 def about():
     secondaryNav = True;
     return render_template('about.html',secondaryNav = secondaryNav)
 
-@app.route("/team")
+@app.route("/team", methods =['GET'])
+@check_user
 def teams():
+    
     secondaryNav = True;
     return render_template('team.html',secondaryNav = secondaryNav)
+
+@app.route("/logout", methods =['GET'])
+@check_user
+def logout():
+    pass
 
 @app.route("/contact",methods=['GET','POST'])
 def contact():
@@ -119,11 +151,11 @@ def contact():
     return render_template('contact.html',secondaryNav = secondaryNav)
 
 @app.route("/login",methods=['GET','POST'])
+@check_user
 def login():
     secondaryNav = True;
     msg = ""
     if request.method == 'POST':
-        from models import User
         auth = request.form
         userEmail = auth['userEmail']
         password = auth['password']
@@ -133,11 +165,11 @@ def login():
         # print(userData)
         
         if not userData:
-            msg = "WWW-Authenticate : 'Basic realm' = User does not exist !!"
+            msg = "WWW-Authenticate : /ERROR 404 = User does not exist!!"
             make_response(
             'Could not verify',
             401,
-            {'WWW-Authenticate' : 'Basic realm ="Login required !!"'}
+            {'WWW-Authenticate' : 'Basic realm = "Login required !!"'}
             )
             return render_template('login.html',secondaryNav = secondaryNav,msg=msg)
         
@@ -145,19 +177,23 @@ def login():
             
             claims = {
                 'userId': userData.id,
-                'exp' : datetime.utcnow() + timedelta(minutes = 30)
+                'exp' : datetime.utcnow() + timedelta(hours=2)
             }
             
             # token = jwt.encode(claims,SECRET_KEY, algorithm='HS256')
             
-            encoded_token = jwt.encode(claims, 'hello','HS256').decode('utf-8')
+            encoded_token = jwt.encode(claims, SECRET_KEY,'HS256').decode('utf-8')
             
             # print(encoded_token)
             
             make_response(jsonify({'token' : encoded_token},201))
             
-            session["email"] = request.form.get("userEmail")
+            # session["email"] = request.form.get("userEmail")
             session["token"] = encoded_token
+            session["user_Login"] = True
+            session["token_exp"] = claims['exp']
+            
+            # print(datetime.utcnow() + timedelta(seconds=0) == claims['exp'])
             
             # print(session['email'])
             # print(token)
@@ -172,6 +208,7 @@ def login():
     return render_template('login.html',secondaryNav = secondaryNav,msg=msg)
 
 @app.route("/register",methods=['GET','POST'])
+@check_user
 def register():
     secondaryNav = True;
     msg = ""
