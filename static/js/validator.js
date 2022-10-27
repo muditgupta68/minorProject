@@ -51,10 +51,16 @@ const checkPhone = () => {
 
     const max = 12,min=10;
 
+    const phoneRegex = /^\d{10}$/;
+
     if (!isRequired(tPhone)) {
         showError(phone, 'phone cannot be blank.');
     }else if (!isBetween(tPhone.length, min, max)) {
         showError(phone, `Invalid Mobile Number`)
+        
+    }else if (!phoneRegex.test(tPhone)) {
+        showError(phone, `Invalid Format`)
+        
     } else {
         showSuccess(phone);
         valid = true;

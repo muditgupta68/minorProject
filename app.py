@@ -1,3 +1,4 @@
+from tkinter import N
 from flask import Flask,render_template,request,redirect, url_for,flash, session,make_response,jsonify
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
@@ -94,37 +95,48 @@ def check_user(route_name):
 
 @app.route("/", methods =['GET'])
 def home():
-    if session.get('user_Login') and session.get('user_Login')==True:
-        return redirect(url_for('dashboard'))
-    return render_template('home.html')
+    # if session.get('user_Login') and session.get('user_Login')==True:
+    #     return redirect(url_for('dashboard'))
+    userData = None
+    if session.get('current_user'):
+        userData = session.get("current_user")
+    return render_template('home.html',userData=userData)
 
 @app.route("/dashboard", methods =['GET'])
 @token_required
 def dashboard(current_user):
     return render_template('dashboard.html',userData=current_user)
+
+@app.route("/logout", methods =['GET'])
+@token_required
+def logout(current_user):
+    if current_user:
+        session.clear()
+        return redirect(url_for('home'))
     
 
 @app.route("/about", methods =['GET'])
-@check_user
 def about():
     secondaryNav = True;
-    return render_template('about.html',secondaryNav = secondaryNav)
+    userData = None
+    if session.get('current_user'):
+        userData = session.get("current_user")
+    return render_template('about.html',secondaryNav = secondaryNav,userData=userData)
 
 @app.route("/team", methods =['GET'])
-@check_user
 def teams():
-    
     secondaryNav = True;
-    return render_template('team.html',secondaryNav = secondaryNav)
-
-@app.route("/logout", methods =['GET'])
-@check_user
-def logout():
-    pass
+    userData = None
+    if session.get('current_user'):
+        userData = session.get("current_user")
+    return render_template('team.html',secondaryNav = secondaryNav,userData=userData)
 
 @app.route("/contact",methods=['GET','POST'])
 def contact():
-    secondaryNav = False;
+    secondaryNav = False
+    userData = None
+    if session.get('current_user'):
+        userData = session.get("current_user")
     if request.method == 'POST':
         form = request.form
         name = form['name']
@@ -146,9 +158,11 @@ def contact():
                                                    name=name,msg=message,phone=phone,email=email)
                             )
         
+        if userData:
+            return redirect(url_for("dashboard"))
         return redirect(url_for("home"))
         
-    return render_template('contact.html',secondaryNav = secondaryNav)
+    return render_template('contact.html',secondaryNav = secondaryNav,userData = userData)
 
 @app.route("/login",methods=['GET','POST'])
 @check_user

@@ -7,7 +7,17 @@
         <div class="masthead-heading text-uppercase">
           Prediction is innovation
         </div>
-        <a class="btn btn-primary btn-xl text-uppercase" href="/register">Join Now</a>
+        {% if userData %}
+          <div>
+          <a class="btn btn-primary btn-xl text-uppercase" href="/dashboard">Go to Dashboard</a>
+          </div>
+            {% else %}
+            <div>
+              <a class="btn btn-primary btn-xl text-uppercase" href="/register">Join Now</a>
+            </div>
+            {% endif %}
+        
+        
       </div>
     </header>
     <!-- Services-->
@@ -426,7 +436,7 @@
         </div>
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
-            <p class="large text-muted">Group No. 138 (7CSE-8Y)</p>
+            <p class="large text-muted">Group No. 138</p>
           </div>
         </div>
       </div>

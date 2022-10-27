@@ -85,11 +85,19 @@
             <li class="nav-item">
               <a class="nav-link" href="/contact">Contact</a>
             </li>
+            {% if userData %}
             <li class="nav-item btn_login">
-                <a href="/login">
-                <button type="button" class="btn btn-outline-warning" id="loginNavigation">Sign In</button>
+                <a href="/logout">
+                <button type="button" class="btn btn-outline-warning px-3 py-2" id="loginNavigation">Welcome, {{userData.userName[0]|upper}}{{userData.userName[1:] }}</button>
                 </a>
             </li>
+            {% else %}
+            <li class="nav-item btn_login">
+                <a href="/login">
+                <button type="button" class="btn btn-outline-warning px-3 py-2" id="loginNavigation">Sign In</button>
+                </a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -139,11 +147,19 @@
             <li class="nav-item">
               <a class="nav-link" href="/contact">Contact</a>
             </li>
+            {% if userData %}
+            <li class="nav-item btn_login">
+                <a href="/logout">
+                <button type="button" class="btn btn-outline-warning px-3 py-2" id="loginNavigation">Welcome, {{userData.userName[0]|upper}}{{userData.userName[1:] }}</button>
+                </a>
+            </li>
+            {% else %}
             <li class="nav-item btn_login">
                 <a href="/login">
                 <button type="button" class="btn btn-outline-warning px-3 py-2" id="loginNavigation">Sign In</button>
                 </a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </div>
