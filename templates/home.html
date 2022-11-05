@@ -21,7 +21,7 @@
       </div>
     </header>
     <!-- Services-->
-    <section class="page-section" id="services">
+    <section class="page-section animate__animated" id="services">
       <div class="container">
         <div class="text-center">
           <h2 class="section-heading text-uppercase">Service</h2>
@@ -69,7 +69,7 @@
     </section>
 
     <!-- Portfolio Grid-->
-    <section class="page-section bg-light" id="portfolio">
+    <section class="page-section bg-light animate__animated" id="portfolio">
       <div class="container">
         <div class="text-center">
           <h2 class="section-heading text-uppercase">Key Features</h2>
@@ -250,7 +250,7 @@
       </div>
     </section>
     <!-- About-->
-    <section class="page-section" id="about">
+    <section class="page-section animate__animated" id="about">
       <div class="container">
         <div class="text-center">
           <h2 class="section-heading text-uppercase">About</h2>
@@ -367,7 +367,7 @@
       </div>
     </section>
     <!-- Team-->
-    <section class="page-section bg-light" id="team">
+    <section class="page-section bg-light animate__animated" id="team">
       <div class="container">
         <div class="text-center">
           <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
@@ -455,6 +455,18 @@
         <div class="col-md-6">
           <div class="form-group">
             <!-- Name input-->
+            {% if userData %}
+            <input
+              class="form-control"
+              id="name"
+              type="text"
+              placeholder="Your Name *"
+              name="name"
+              value={{userData.userName}}
+              required
+              autocomplete="my-field-name1"
+            />
+            {% else %}
             <input
               class="form-control"
               id="name"
@@ -464,19 +476,35 @@
               required
               autocomplete="my-field-name1"
             />
+            {% endif %}
             <small class="text_white none"></small>
           </div>
           <div class="form-group">
             <!-- Email address input-->
+            {% if userData %}
             <input
               class="form-control"
               id="email"
               type="email"
               placeholder="Your Email *"
               name="email"
+              value={{userData.userEmail}}
               required
               autocomplete="my-field-name2"
             />
+            {% else %}
+            <input
+            class="form-control"
+            id="email"
+            type="email"
+            placeholder="Your Email *"
+            name="email"
+            required
+            autocomplete="my-field-name2"
+          />
+            {% endif %}
+
+
             <small class="text_white none"></small>
           </div>
           <div class="form-group mb-md-0">

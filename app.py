@@ -1,4 +1,3 @@
-from tkinter import N
 from flask import Flask,render_template,request,redirect, url_for,flash, session,make_response,jsonify
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
@@ -105,7 +104,8 @@ def home():
 @app.route("/dashboard", methods =['GET'])
 @token_required
 def dashboard(current_user):
-    return render_template('dashboard.html',userData=current_user)
+    userData = session.get("current_user")
+    return render_template('dashIndex.html',userData=userData)
 
 @app.route("/logout", methods =['GET'])
 @token_required

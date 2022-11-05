@@ -1,3 +1,5 @@
+// website pages
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Navbar shrink function
@@ -65,3 +67,23 @@ window.addEventListener('DOMContentLoaded', event => {
 setTimeout(function() {
     bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
 }, 2000)
+
+function reveal() {
+    var reveals = document.querySelectorAll(".animate__animated");
+  
+    for (var i = 0; i < reveals.length; i++) {
+      var windowHeight = window.innerHeight;
+      var elementTop = reveals[i].getBoundingClientRect().top;
+      var elementVisible = 150;
+  
+      if (elementTop < windowHeight - elementVisible) {
+        reveals[i].classList.add("animate__fadeInRight");
+      } else {
+        reveals[i].classList.remove("animate__fadeInRight");
+      }
+    }
+  }
+  
+  window.addEventListener("scroll", reveal);
+
+

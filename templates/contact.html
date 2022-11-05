@@ -12,6 +12,18 @@
         <div class="col-md-6">
           <div class="form-group">
             <!-- Name input-->
+            {% if userData %}
+            <input
+              class="form-control"
+              id="name"
+              type="text"
+              placeholder="Your Name *"
+              name="name"
+              value={{userData.userName}}
+              required
+              autocomplete="my-field-name1"
+            />
+            {% else %}
             <input
               class="form-control"
               id="name"
@@ -21,19 +33,35 @@
               required
               autocomplete="my-field-name1"
             />
+            {% endif %}
             <small class="text_white none"></small>
           </div>
           <div class="form-group">
             <!-- Email address input-->
+            {% if userData %}
             <input
               class="form-control"
               id="email"
               type="email"
               placeholder="Your Email *"
               name="email"
+              value={{userData.userEmail}}
               required
               autocomplete="my-field-name2"
             />
+            {% else %}
+            <input
+            class="form-control"
+            id="email"
+            type="email"
+            placeholder="Your Email *"
+            name="email"
+            required
+            autocomplete="my-field-name2"
+          />
+            {% endif %}
+
+
             <small class="text_white none"></small>
           </div>
           <div class="form-group mb-md-0">
