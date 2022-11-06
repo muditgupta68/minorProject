@@ -57,7 +57,7 @@
                       </nav>
                   </div> -->
                   <div class="sb-sidenav-menu-heading">Addons</div>
-                  <a class="nav-link collapsed" href="/" aria-expanded="false" aria-controls="collapsePages">
+                  <a class="nav-link collapsed" href="/allMembers" aria-expanded="false" aria-controls="collapsePages">
                       <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                       All Members
                       <div class="sb-sidenav-collapse-arrow"></div>
@@ -93,6 +93,10 @@
                                   <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                   Change Password
                               </a>
+                              <a class="nav-link" href="/deactivate">
+                                  <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                  Deactivate User
+                              </a>
                               <a class="nav-link" href="/">
                                   <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                   Delete User
@@ -114,7 +118,7 @@
       </nav>
   </div>
   <!-- main content -->
-  <div id="layoutSidenav_content" class="dark_side_content">
+  <div id="layoutSidenav_content" class="dark_side_content container-fluid px-4">
     {% block body %}
     <!-- BODY content -->
     {% endblock %}

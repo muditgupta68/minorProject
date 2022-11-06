@@ -11319,11 +11319,23 @@ body {
   z-index: 1038;
   transform: translateX(-225px);
 }
+
+.table{
+  text-align: center !important;
+}
+
+.active_td{
+  color: #005e00 !important;
+}
+.inactive_td{
+  color: #8e1e29 !important;
+}
+
 #layoutSidenav #layoutSidenav_content {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: space-between; */
   min-width: 0;
   flex-grow: 1;
   min-height: calc(100vh - 56px);

@@ -3,6 +3,7 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import os
+import re
 from flask_bcrypt import Bcrypt
 import jwt
 from functools import wraps
@@ -18,6 +19,31 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
+# models initializations
+class Contact(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String(70),nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(12), nullable=False)
+    message = db.Column(db.String(15000), nullable=False)
+    date = db.Column(db.DateTime,default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f"{self.id} - {self.name}"
+
+class User(db.Model):
+    
+    id = db.Column(db.Integer,primary_key=True)
+    userName = db.Column(db.String(70),nullable=False)
+    userEmail = db.Column(db.String(120), nullable=False,unique=True)
+    password = db.Column(db.String(12), nullable=False,unique=True)
+    active = db.Column(db.Boolean,default=True)
+    date = db.Column(db.DateTime,default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f"{self.id} - {self.userName}:{self.userEmail}:{self.active}:{self.date}"
+
+# initiate vars
 PORT = int(app.config['PORT'])
 DEBUG = int(app.config['DEBUG'])
 SECRET_KEY = app.config['SECRET_KEY']
@@ -37,11 +63,10 @@ app.config.update(
 )
 mail = Mail(app)
 
+# main begins apps
+
 def load_user(email):
-    from models import User
     return User.query.filter_by(userEmail=email).first()
-
-
 
 def token_required(f):
     @wraps(f)
@@ -65,12 +90,16 @@ def token_required(f):
         
         try:
             data = jwt.decode(token, SECRET_KEY,'utf-8')
-            from models import User
             current_user = User.query\
                     .filter_by(id = data['userId'])\
                     .first()
             session["current_user"] = current_user
             print(current_user)
+            if current_user.active == False:
+                session.clear()
+                flash("Please Activate your account! ERR:500")
+                return redirect(url_for('login'))
+            
             # to extract data
             # data = session.get("current_user")
             # print(data.id)
@@ -114,6 +143,28 @@ def logout(current_user):
         session.clear()
         return redirect(url_for('home'))
     
+@app.route("/deactivate", methods =['GET'])
+@token_required
+def deactivate(current_user):
+    if current_user:
+        userData = load_user(current_user.userEmail)
+        userData.active = False
+        db.session.commit()
+        session.clear()
+        return redirect(url_for('home'))
+    
+@app.route("/allMembers", methods =['GET'])
+@token_required
+def allMembers(current_user):
+    userData = session.get("current_user")
+    allUsers = getAllMembers();
+    return render_template('members.html',userData=userData,allUsers=allUsers)
+
+def getAllMembers():
+    users = User.query.all()
+    # print(users);
+    return users;
+    
 
 @app.route("/about", methods =['GET'])
 def about():
@@ -143,8 +194,7 @@ def contact():
         email = form['email']
         phone = form['phone']
         message = form['message']
-        
-        from models import Contact
+
         contactData = Contact(name=name,email=email,phone=phone,message=message)
         db.session.add(contactData)
         db.session.commit()
@@ -152,11 +202,9 @@ def contact():
         mail.send_message(' 📦 New message for PedDetector',
                             sender = 'yourId@gmail.com',
                             recipients = [gmail_user],
-                            # body = f"Respected Team,\n\n{message}\n\nRegards,\n{name}\n{phone}",
-                            # body="\nMESSAGE:\n" + message + "\nRegards,\n"+name+"\n"+phone
                             html = render_template('/emails/contactMessage.html',
                                                    name=name,msg=message,phone=phone,email=email)
-                            )
+                        )
         
         if userData:
             return redirect(url_for("dashboard"))
@@ -188,6 +236,9 @@ def login():
             return render_template('login.html',secondaryNav = secondaryNav,msg=msg)
         
         if bcrypt.check_password_hash(userData.password, password):
+            
+            userData.active = True
+            db.session.commit()
             
             claims = {
                 'userId': userData.id,
@@ -227,7 +278,7 @@ def register():
     secondaryNav = True;
     msg = ""
     if request.method == 'POST':
-        from models import User
+        
         auth = request.form
         userName = auth['userName']
         userEmail = auth['userEmail']
