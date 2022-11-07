@@ -47,7 +47,7 @@ const toggleMode = () => {
     layoutSidenav_content.classList.add("light_side_content");
     text_color.classList.add("light");
     sidenav.classList.add("sb-sidenav-light");
-    
+
     text_color.classList.remove("dark");
     topNav.classList.remove("navbar-dark");
     topNav.classList.remove("bg-dark");
@@ -59,3 +59,29 @@ const toggleMode = () => {
 };
 
 flexSwitchCheck.addEventListener("click", toggleMode);
+
+var upload = document.getElementById("upload");
+var imageResult = document.getElementById("imageResult");
+var infoArea = document.getElementById("upload-label");
+
+upload.addEventListener("change", showFileName);
+function showFileName(event) {
+  var upload = event.srcElement;
+  var fileName = upload.files[0].name;
+  infoArea.textContent = "File name: " + fileName;
+}
+
+upload.addEventListener("change", function () {
+  readURL(upload);
+});
+
+function readURL(upload) {
+  if (upload.files && upload.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        imageResult.setAttribute('src', e.target.result);
+      };
+      reader.readAsDataURL(upload.files[0]);
+  }
+}

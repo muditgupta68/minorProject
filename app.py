@@ -160,6 +160,12 @@ def allMembers(current_user):
     allUsers = getAllMembers();
     return render_template('members.html',userData=userData,allUsers=allUsers)
 
+@app.route("/detection", methods =['GET'])
+@token_required
+def detection(current_user):
+    userData = session.get("current_user")
+    return render_template('dashPredict.html',userData=userData)
+
 def getAllMembers():
     users = User.query.all()
     # print(users);
