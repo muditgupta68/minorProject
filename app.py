@@ -3,7 +3,6 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import os
-import re
 from flask_bcrypt import Bcrypt
 import jwt
 from functools import wraps
@@ -320,4 +319,4 @@ def create_tables():
     db.create_all()
 
 if __name__ == "__main__":
-    app.run(debug=DEBUG,port = PORT, host='0.0.0.0')
+    app.run(debug=DEBUG,port = PORT)
