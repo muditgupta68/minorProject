@@ -13,6 +13,6 @@ PORT = config('PORT')
 DEBUG=config('DEBUG')
 # TESTING=config('DEBUG')
 
-gmail_user=config('gmail_user')
-gmail_pass=config('gmail_pass')
+USER=config('gmail_user')
+PASS=config('gmail_pass')
 
