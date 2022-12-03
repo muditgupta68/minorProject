@@ -14,6 +14,7 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 app.config["SESSION_PERMANENT"] = False
+app.config["SECURITY_EMAIL_SENDER"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
